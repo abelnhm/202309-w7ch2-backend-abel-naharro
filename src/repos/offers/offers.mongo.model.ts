@@ -1,12 +1,25 @@
 import { Schema, model } from 'mongoose';
-import { Offer } from '../entities/offers';
+import { Offer } from '../../entities/offers';
 
 // Crear el modelo de datos
 const offersSchema = new Schema<Offer>({
   title: { type: String, required: true, unique: true },
   image: { type: String, required: true },
   description: { type: String, required: true },
-  author: { type: String, required: true },
+  author: {
+    // Relacion n-m con varios usuarios tendria que ser [{...}] indicando que pueden ser varios usuarios.
+    /*
+    [{
+    type: Schema.Types.ObjectId, // Tipo de dato ObjectId
+    ref: 'User', // Relacionar con el modelo de usuarios User (UserModel)
+    required: true,
+    }]
+    */
+    // Relacionar con el Schema de usuarios
+    type: Schema.Types.ObjectId, // Tipo de dato ObjectId
+    ref: 'User', // Relacionar con el modelo de usuarios User (UserModel)
+    required: true,
+  },
   price: { type: Number, required: true },
   discount: { type: Number, required: true },
   isActive: { type: Boolean, required: true },
