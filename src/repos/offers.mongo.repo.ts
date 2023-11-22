@@ -12,12 +12,16 @@ export class OffersMongoRepo implements Repository<Offer> {
   }
 
   async getAll(): Promise<Offer[]> {
-    const result = await OfferModel.find();
+    /* 
+    Exec sirve para ejecutar la query y convertir el resultado en una promesa,
+    como indicamos que tiene que devolver el metodo devuelve el metodo
+    */
+    const result = await OfferModel.find().exec();
     return result;
   }
 
   async getById(id: string): Promise<Offer> {
-    const result = await OfferModel.findById(id);
+    const result = await OfferModel.findById(id).exec();
     if (!result) throw new HttpError(404, 'Not Found', 'GetById not possible');
     return result;
   }
@@ -30,13 +34,13 @@ export class OffersMongoRepo implements Repository<Offer> {
   async update(id: string, updatedItem: Partial<Offer>): Promise<Offer> {
     const result = await OfferModel.findByIdAndUpdate(id, updatedItem, {
       new: true,
-    });
+    }).exec();
     if (!result) throw new HttpError(404, 'Not Found', 'Update not possible');
     return result;
   }
 
   async delete(id: string): Promise<void> {
-    const result = await OfferModel.findByIdAndDelete(id);
+    const result = await OfferModel.findByIdAndDelete(id).exec();
     if (!result) {
       throw new HttpError(404, 'Not Found', 'Delete not possible');
     }
